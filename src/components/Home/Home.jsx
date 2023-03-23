@@ -10,7 +10,9 @@ export default function Home() {
       </p>
 
       <div>
-        <Link to="authentication/login">Login</Link>
+        <Link to="authentication/login" style={{ marginRight: '10px' }}>
+          Login
+        </Link>
 
         <Link to="authentication/register">Register</Link>
       </div>
