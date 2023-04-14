@@ -6,27 +6,27 @@ import Button from '@mui/material/Button';
 import { deleteContact, editContact } from 'redux/operations';
 
 export default function ContactListItem({ id, name, number }) {
-  const [, setEditedName] = useState(name);
-  const [, setEditedNumber] = useState(number);
+  const [editedName, setEditedName] = useState(name);
+  const [editedNumber, setEditedNumber] = useState(number);
   const [isEdit, setIsEdit] = useState(false);
 
   const dispatch = useDispatch();
 
-  const handleEditContact = (newName, newNumber) => {
+  const handleEditContact = () => {
     if (!isEdit) {
       setIsEdit(true);
       return;
     }
 
     setIsEdit(false);
-    setEditedName(newName);
-    setEditedNumber(newNumber);
+    setEditedName(editedName);
+    setEditedNumber(editedNumber);
 
     dispatch(
       editContact({
-        id: id,
-        name: newName ? newName : name,
-        number: newNumber ? newNumber : number,
+        id,
+        name: editedName,
+        number: editedNumber,
       })
     );
   };
@@ -40,7 +40,7 @@ export default function ContactListItem({ id, name, number }) {
             <input
               name="name"
               type="text"
-              value={name}
+              value={editedName}
               onChange={event => setEditedName(event.target.value)}
             />
           </label>
@@ -50,7 +50,7 @@ export default function ContactListItem({ id, name, number }) {
             <input
               name="number"
               type="text"
-              value={number}
+              value={editedNumber}
               onChange={event => setEditedNumber(event.target.value)}
             />
           </label>
@@ -62,9 +62,16 @@ export default function ContactListItem({ id, name, number }) {
       )}
 
       <div>
-        <Button type="button" onClick={() => dispatch(deleteContact(id))}>
-          Delete
-        </Button>
+        {isEdit ? (
+          <Button type="button" disabled>
+            Delete
+          </Button>
+        ) : (
+          <Button type="button" onClick={() => dispatch(deleteContact(id))}>
+            Delete
+          </Button>
+        )}
+
         <Button type="button" onClick={handleEditContact}>
           {isEdit ? 'Save' : 'Edit'}
         </Button>
